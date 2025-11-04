@@ -58,10 +58,10 @@ def main():
     """Основная функция"""
 
     # Соединение данных один-ко-многим
-    one_to_many = [(c.name, c.compile_time, pl.name)
+    one_to_many = [(sc.name, sc.compile_time, pl.name)
                    for pl in languages
-                   for c in constructions
-                   if c.pl_id == pl.id]
+                   for sc in constructions
+                   if sc.pl_id == pl.id]
 
     # Соединение данных многие-ко-многим
     many_to_many_temp = [(pl.name, lc.pl_id, lc.sc_id)
@@ -102,8 +102,8 @@ def main():
     # Сортировка по минимальному времени компиляции
     result_2 = sorted(result_2_unsorted, key=itemgetter(1))
 
-    for lang_name, min_time in result_2:
-        print(f"Язык: {lang_name:<15} Мин. время компиляции: {min_time} мс")
+    for language_name, min_time in result_2:
+        print(f"Язык: {language_name:<15} Мин. время компиляции: {min_time} мс")
 
     print('\nЗадание В3')
     # Список всех связанных конструкций и языков, отсортированный по конструкциям
