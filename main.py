@@ -1,106 +1,116 @@
-import sys
-import math
+from operator import itemgetter
 
 
-def get_coef_sys(index):
-    try:
-        coef = float(sys.argv[index])
-        return coef
-    except IndexError:
-        print("Введено недостаточное количество корней!")
-        exit()
-    except ValueError:
-        print("Необходимо ввести действительное число!")
-        exit()
+class ProgrammingLanguage:
+    """Язык программирования"""
+
+    def __init__(self, pl_id, name):
+        self.id = pl_id
+        self.name = name
 
 
-def get_coef(prompt):
-    while True:
-        try:
-            print(prompt)
-            coef = float(input())
-            return coef
-        except ValueError:
-            print("Необходимо ввести действительное число!")
+class SyntaxConstruction:
+    """Синтаксическая конструкция"""
+
+    def __init__(self, sc_id, name, compile_time, pl_id):
+        self.id = sc_id
+        self.name = name
+        self.compile_time = compile_time    # Время компиляции в миллисекундах - количественный признак
+        self.pl_id = pl_id
 
 
-def solve_equation(a, b, c):
-    if a == 0:
-        print("Первый коэффициент а не должен быть равен 0")
-        exit()
+class LanguageConstruction:
+    """Конструкции языков для связи многие-ко-многим"""
 
-    disc = b ** 2 - 4 * a * c
-    roots = []
+    def __init__(self, sc_id, pl_id):
+        self.sc_id = sc_id
+        self.pl_id = pl_id
 
-    if disc < 0:
-        return roots
-    elif disc == 0:
-        t = -b / (2.0 * a)
-        if t > 0:
-            root1 = math.sqrt(t)
-            root2 = -math.sqrt(t)
-            roots += [root1, root2]
-        elif t == 0:
-            roots.append(0.0)
-    else:
-        t1 = (-b + math.sqrt(disc)) / (2.0 * a)
-        t2 = (-b - math.sqrt(disc)) / (2.0 * a)
 
-        if t1 > 0:
-            root1 = math.sqrt(t1)
-            root2 = -math.sqrt(t1)
-            roots += [root1, root2]
-        elif t1 == 0:
-            roots.append(0.0)
+# Языки программирования
+languages = [
+    ProgrammingLanguage(1, "Python"),
+    ProgrammingLanguage(2, "Java"),
+    ProgrammingLanguage(3, "C++"),
+    ProgrammingLanguage(4, "JavaScript")
+]
 
-        if t2 > 0:
-            root1 = math.sqrt(t2)
-            root2 = -math.sqrt(t2)
-            roots += [root1, root2]
-        elif t2 == 0:
-            roots.append(0.0)
+# Синтаксические конструкции
+constructions = [
+    SyntaxConstruction(1, "Лямбда-функция", 3, 1),
+    SyntaxConstruction(2, "Интерфейс", 8, 2),
+    SyntaxConstruction(3, "Абстрактный класс", 10, 2),
+    SyntaxConstruction(4, "Шаблон функции", 12, 3),
+    SyntaxConstruction(5, "Асинхронная функция", 7, 4)
+]
 
-    roots = sorted(list(set(roots)))
-    return roots
+# Связи многие-ко-многим
+language_constructions = [
+    LanguageConstruction(1, 1),
+    LanguageConstruction(2, 2),
+    LanguageConstruction(3, 2),
+    LanguageConstruction(4, 3),
+    LanguageConstruction(5, 1),
+]
 
 
 def main():
-    if len(sys.argv) > 1:
-        a = get_coef_sys(1)
-        b = get_coef_sys(2)
-        c = get_coef_sys(3)
-    else:
-        print("Биквадратное уравнение: a*x^4 + b*x^2 + c = 0")
-        a = get_coef('Введите первый коэффициент a:')
-        b = get_coef('Введите второй коэффициент b:')
-        c = get_coef('Введите третий коэффициент c:')
+    """Основная функция"""
 
-    roots = solve_equation(a, b, c)
+    # Соединение данных один-ко-многим
+    one_to_many = [(c.name, c.compile_time, pl.name)
+                   for pl in languages
+                   for c in constructions
+                   if c.pl_id == pl.id]
 
-    eq = f"Решение уравнения: {a}*x^4 "
-    if b > 0:
-        eq += f"+ {b}*x^2 "
-    elif b < 0:
-        eq += f"- {abs(b)}*x^2 "
-    if c > 0:
-        eq += f"+ {c} = 0"
-    elif c < 0:
-        eq += f"- {abs(c)} = 0"
-    else:
-        eq += f"= 0"
-    print(eq)
+    # Соединение данных многие-ко-многим
+    many_to_many_temp = [(pl.name, lc.pl_id, lc.sc_id)
+                         for pl in languages
+                         for lc in language_constructions
+                         if pl.id == lc.pl_id]
 
-    len_roots = len(roots)
-    if len_roots == 0:
-        print('Действительных корней нет')
-    elif len_roots == 1:
-        print(f"Один действительный корень: {roots[0]:.4g}")
-    elif len_roots == 2:
-        print(f'Два действительных корня: {roots[0]:.4g} и {roots[1]:.4g}')
-    elif len_roots == 3:
-        print(f'Три действительных корня: {roots[0]:.4g}, {roots[1]:.4g} и {roots[2]:.4g}')
-    else:
-        print(f'Четыре действительных корня: {roots[0]:.4g}, {roots[1]:.4g}, {roots[2]:.4g} и {roots[3]:.4g}')
+    many_to_many = [(sc.name, sc.compile_time, pl_name)
+                    for pl_name, pl_id, sc_id in many_to_many_temp
+                    for sc in constructions if sc.id == sc_id]
+
+    print('Задание В1')
+    # Список синтаксическиях конструкций, название которых начинается с 'А',
+    # и названия языков, в которых они содержатся:
+    result_1 = list(filter(lambda i: i[0].startswith('А'), one_to_many))
+    # Сортируем по названию конструкции
+    result_1_sorted = sorted(result_1, key=itemgetter(0))
+
+    for construction_name, compile_time, language_name in result_1_sorted:
+        print(f"Конструкция: {construction_name:<25} Язык: {language_name}")
+
+    print('\nЗадание В2')
+    # Список языков с минимальным временем компиляции конструкций в каждом языке программирования,
+    # отсортированный по минимальному времени компиляции
+    result_2_unsorted = []
+    # Перебираем все языки программирования
+    for pl in languages:
+        # Список конструкций языка
+        l_constructions = list(filter(lambda i: i[2] == pl.name, one_to_many))
+        # Если конструкция не пустая
+        if len(l_constructions) > 0:
+            # Времена компиляции конструкций языка
+            l_times = [time for _, time, _ in l_constructions]
+            # Минимальное время компиляции
+            l_min_time = min(l_times)
+            result_2_unsorted.append((pl.name, l_min_time))
+
+    # Сортировка по минимальному времени компиляции
+    result_2 = sorted(result_2_unsorted, key=itemgetter(1))
+
+    for lang_name, min_time in result_2:
+        print(f"Язык: {lang_name:<15} Мин. время компиляции: {min_time} мс")
+
+    print('\nЗадание В3')
+    # Список всех связанных конструкций и языков, отсортированный по конструкциям
+    result_3 = sorted(many_to_many, key=itemgetter(0))
+
+    for construction_name, compile_time, language_name in result_3:
+        print(f"Конструкция: {construction_name:<25} Язык: {language_name}")
 
 
 if __name__ == "__main__":
