@@ -18,8 +18,8 @@ def cm_timer_2():
     """ Контекстный менеджер с использованием contextlib """
     start_time = time.time()
     try:
-        yield  # приостанавливаем выполнение и передаём управление коду внутри with
-    finally:  # выполняется уже после отработки блока with
+        yield
+    finally:
         period = time.time() - start_time
         print(f"Время работы: {period:.3f}")
 
