@@ -1,7 +1,9 @@
+#  Структурный шаблон: декоратор
 from abc import ABC, abstractmethod
 
 
 class OrderComponent(ABC):
+    """Абстрактный компонент заказа"""
     @abstractmethod
     def get_description(self):
         pass
@@ -12,6 +14,7 @@ class OrderComponent(ABC):
 
 
 class BasicOrder(OrderComponent):
+    """Базовый заказ"""
     def __init__(self, bouquet):
         self.bouquet = bouquet
 
@@ -23,6 +26,7 @@ class BasicOrder(OrderComponent):
 
 
 class OrderDecorator(OrderComponent):
+    """Базовый декоратор для заказов"""
     def __init__(self, wrapped):
         self._wrapped = wrapped
 
@@ -34,6 +38,7 @@ class OrderDecorator(OrderComponent):
 
 
 class WrappingDecorator(OrderDecorator):
+    """Декоратор подарочной упаковки"""
     def __init__(self, wrapped, style="стандартная"):
         super().__init__(wrapped)
         self.style = style
@@ -47,6 +52,7 @@ class WrappingDecorator(OrderDecorator):
 
 
 class CardDecorator(OrderDecorator):
+    """Декоратор открытки"""
     def __init__(self, wrapped, message=""):
         super().__init__(wrapped)
         self.message = message

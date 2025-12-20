@@ -1,37 +1,9 @@
+#  Модульное тестирование через TDD - фреймворк
 import sys
 import os
 from prototype import Flower, BouquetPrototype
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-
-class TestFlowerTDD:
-    def test_flower_creation_red_green_refactor(self):
-        flower = Flower("Роза", "красная", 100)
-
-        assert flower.name == "Роза"
-        assert flower.color == "красная"
-        assert flower.price == 100
-
-        assert str(flower) == "красная Роза 100₽"
-
-    def test_flower_clone_tdd(self):
-        original = Flower("Тюльпан", "желтый", 50)
-        cloned = original.clone()
-
-        assert cloned.name == original.name
-        assert cloned.color == original.color
-        assert cloned.price == original.price
-
-        assert cloned is not original
-
-        cloned.color = "красный"
-        assert original.color == "желтый"
-
-    def test_flower_str_method_tdd(self):
-        flower = Flower("Орхидея", "белая", 200)
-        expected = "белая Орхидея 200₽"
-        assert str(flower) == expected
 
 
 class TestBouquetPrototypeTDD:

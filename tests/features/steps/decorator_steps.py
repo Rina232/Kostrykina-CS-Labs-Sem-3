@@ -1,3 +1,4 @@
+#  Модульное тестирование через BDD - фреймворк
 import sys
 import os
 from prototype import Flower, BouquetPrototype

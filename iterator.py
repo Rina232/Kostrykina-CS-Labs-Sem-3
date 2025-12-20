@@ -1,4 +1,8 @@
+#  Поведенческий шаблон: итератор
+
+
 class BouquetIterator:
+    """Итератор для букета"""
     def __init__(self, bouquet):
         self._bouquet = bouquet
         self._index = 0

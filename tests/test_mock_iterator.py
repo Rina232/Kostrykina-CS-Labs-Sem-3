@@ -1,8 +1,9 @@
+#  Модульное тестирование через создание Mock-объектов
 from unittest.mock import Mock
 from iterator import BouquetIterator
 
 
-def test_minimal_mock():
+def test_mock():
     mock_flower = Mock()
     mock_flower.name = "Тестовый цветок"
 
@@ -20,4 +21,4 @@ def test_minimal_mock():
 
 
 if __name__ == "__main__":
-    test_minimal_mock()
+    test_mock()

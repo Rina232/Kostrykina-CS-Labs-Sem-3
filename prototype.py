@@ -1,14 +1,17 @@
+#  Порождающий шаблон: прототип
 import copy
 from abc import ABC, abstractmethod
 
 
 class FlowerPrototype(ABC):
+    """Абстрактный базовый класс для клонирования цветов"""
     @abstractmethod
     def clone(self):
         pass
 
 
 class Flower(FlowerPrototype):
+    """Конкретный цветок с возможностью клонирования"""
     def __init__(self, name, color, price):
         self.name = name
         self.color = color
@@ -22,6 +25,7 @@ class Flower(FlowerPrototype):
 
 
 class BouquetPrototype(FlowerPrototype):
+    """Прототип букета (композиции цветов)"""
     def __init__(self, name):
         self.name = name
         self.flowers = []
